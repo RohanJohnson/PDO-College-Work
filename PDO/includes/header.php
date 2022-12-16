@@ -8,16 +8,13 @@
 </head>
 
 <?php
-$dark_theme = false;
 
 if (isset($_POST['theme-button'])) {
-  $dark_theme = !$dark_theme;
+  $_SESSION['dark'] = true;
 }
 
-$light_theme = false;
-
 if (isset($_POST['theme-light'])) {
-  $light_theme = !$light_theme;
+  $_SESSION['dark'] = false;
 }
 ?>
 
@@ -28,7 +25,7 @@ if (isset($_POST['theme-light'])) {
   <input type="submit" name="theme-light" value="Light Mode" />
 </form>
 
-<?php if ($dark_theme) { ?>
+<?php if ($_SESSION['dark']) { ?>
   <style>
     body {
       background-color: #333;

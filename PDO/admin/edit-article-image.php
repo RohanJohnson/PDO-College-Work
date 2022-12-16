@@ -58,6 +58,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $base = preg_replace('/[^a-zA-Z0-9_-]/', '_', $base);
 
+        $base = mb_substr($base, 0, 200);
+
         $filename = $base . "." . $pathinfo['extension'];
 
         $destination = "../uploads/$filename";
@@ -70,7 +72,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         if (move_uploaded_file($_FILES['file']['tmp_name'], $destination)) {
-            echo "File uploaded successfully.";
+            
+            $previous_image = $article->image_file;
+
+            if ($article->setImageFile($conn, $filename)) {
+
+                if ($previous_image) {
+                    unlink("../uploads/$previous_image");
+                }
+
+                Url::redirect("/PDO/admin/article.php?id={$article->id}");
+            }
         }
         else {
             throw new Exception('Unable to move uploaded file');
