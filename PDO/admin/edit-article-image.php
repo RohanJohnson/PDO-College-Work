@@ -44,6 +44,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         $mime_types = ['image/gif', 'image/png', 'image/jpeg'];
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime_type = finfo_file($finfo, $_FILES['file']['tmp_name']);
+
+
         if (!in_array($_FILES['file']['type'], $mime_types)) {
             throw new Exception('Invalid file type');
         }
