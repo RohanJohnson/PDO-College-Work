@@ -21,7 +21,7 @@ else {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    var_dump($_FILES);
+    
     try {
 
         if (empty($_FILES)) {
@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     unlink("../uploads/$previous_image");
                 }
 
-                Url::redirect("/PDO/admin/article.php?id={$article->id}");
+                Url::redirect("/PDO/admin/edit-article-image.php?id={$article->id}");
             }
         }
         else {
@@ -91,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     }
     catch (Exception $e) {
-        echo $e->getMessage();
+        $error = $e->getMessage();
     }
 }
 
@@ -100,6 +100,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <?php require '../includes/header.php'; ?>
 
 <h2>Edit article image</h2>
+<?php if ($article->image_file) : ?>
+
+<img src="../uploads/<?= $article->image_file; ?>">
+
+<a href="delete-article-image.php?id=<?= $article->id; ?>">Delete</a>
+
+<?php endif; ?>
+
+<?php if (isset($error)) : ?>
+
+<p><?= $error ?></p>
+
+<?php endif; ?>
 
 <form method="post" enctype="multipart/form-data">
 
