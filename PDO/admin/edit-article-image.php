@@ -48,8 +48,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mime_type = finfo_file($finfo, $_FILES['file']['tmp_name']);
 
 
-        if (!in_array($_FILES['file']['type'], $mime_types)) {
+        if (!in_array($mime_type, $mime_types)) {
             throw new Exception('Invalid file type');
+        }
+
+        $pathinfo = pathinfo($_FILES['file']['name']);
+
+        $base = $pathinfo['filename'];
+
+        $base = preg_replace('/[^a-zA-Z0-9_-]/', '_', $base);
+
+        $filename = $base . "." . $pathinfo['extension'];
+
+        $destination = "../uploads/$filename";
+        $i = 1;
+
+        while (file_exists($destination)) {
+            $filename = $base . "-$i." . $pathinfo['extension'];
+            $destination = "../uploads/$filename";
+            $i++;
+        }
+
+        if (move_uploaded_file($_FILES['file']['tmp_name'], $destination)) {
+            echo "File uploaded successfully.";
+        }
+        else {
+            throw new Exception('Unable to move uploaded file');
         }
 
 
