@@ -7,15 +7,16 @@
  */
 class Article
 {
+
     public static function getPage($conn, $limit, $offset)
     {
         $sql = "SELECT * FROM article ORDER BY published_at LIMIT :limit OFFSET :offset";
-    
+
         $stmt = $conn->prepare($sql);
 
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-        
+
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -25,6 +26,12 @@ class Article
      * @var integer
      */
     public $id;
+
+    /**
+     * The article title
+     * @var string
+     */
+    public $image_file;
 
     /**
      * The article title
@@ -120,13 +127,15 @@ class Article
 
             if ($this->published_at == '') {
                 $stmt->bindValue(':published_at', null, PDO::PARAM_NULL);
-            } else {
+            }
+            else {
                 $stmt->bindValue(':published_at', $this->published_at, PDO::PARAM_STR);
             }
 
             return $stmt->execute();
 
-        } else {
+        }
+        else {
             return false;
         }
     }
@@ -152,7 +161,8 @@ class Article
 
                 $this->errors[] = 'Invalid date and time';
 
-            } else {
+            }
+            else {
 
                 $date_errors = date_get_last_errors();
 
@@ -205,7 +215,8 @@ class Article
 
             if ($this->published_at == '') {
                 $stmt->bindValue(':published_at', null, PDO::PARAM_NULL);
-            } else {
+            }
+            else {
                 $stmt->bindValue(':published_at', $this->published_at, PDO::PARAM_STR);
             }
 
@@ -214,8 +225,21 @@ class Article
                 return true;
             }
 
-        } else {
+        }
+        else {
             return false;
         }
+    }
+
+    public function setImageFile($conn, $filename)
+    {
+        $sql = "UPDATE article SET image_file = :image_file WHERE id = :id";
+
+        $stmt = $conn->prepare($sql);
+
+        $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $stmt->bindValue(':image_file', $filename, PDO::PARAM_INT);
+
+        return $stmt->execute();
     }
 }
