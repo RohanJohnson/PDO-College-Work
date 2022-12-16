@@ -45,7 +45,9 @@ if (isset($_POST['theme-light'])) {
 		color: white;
 	}
   </style>
-<?php } else { ?>
+<?php
+}
+else { ?>
   <style>
     body {
       background-color: lightblue;
@@ -58,7 +60,8 @@ if (isset($_POST['theme-light'])) {
 		color:red;
 	}
   </style>
-<?php } ?>
+<?php
+}?>
 
 
 <body>
@@ -70,22 +73,24 @@ if (isset($_POST['theme-light'])) {
     </header>
 
     <a href="/PDO">Home</a>
-    <?php $base = $_SERVER["REQUEST_URI"];?>
+    <?php $base = $_SERVER["REQUEST_URI"]; ?>
 
 <nav>
     <ul>
-        <?php if (Auth::isLoggedIn()) : ?>
+        <?php if (Auth::isLoggedIn()): ?>
             <li>
                 <a href="<?= str_replace($base, "/PDO/admin", $base); ?>">Admin</a>
             </li>
             <li>
                 <a href="<?= str_replace($base, "/PDO/logout.php", $base); ?>">Log out</a>
             </li>
-        <?php elseif ($base != "/PDO/login.php") : ?>
+        <?php
+elseif ($base != "/PDO/login.php"): ?>
             <li>
                 <a href="<?= str_replace($base, "/PDO/login.php", $base); ?>">Log in</a>
             </li>
-        <?php endif; ?>
+        <?php
+endif; ?>
     </ul>
 </nav>
     <main>

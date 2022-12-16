@@ -10,22 +10,66 @@ if (isset($_GET['id'])) {
 
     $article = Article::getByID($conn, $_GET['id']);
 
-    if ( ! $article) {
+    if (!$article) {
         die("article not found");
     }
 
-} else {
+}
+else {
     die("id not supplied, article not found");
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    
+    var_dump($_FILES);
+    try {
+
+        if (empty($_FILES)) {
+            throw new Exception('Invalid upload');
+        }
+
+        switch ($_FILES['file']['error']) {
+            case UPLOAD_ERR_OK:
+                break;
+            case UPLOAD_ERR_NO_FILE:
+                throw new Exception('No file uploaded');
+            case UPLOAD_ERR_INI_SIZE:
+                throw new Exception('File is too large (from server settings)');
+            default:
+                throw new Exception('An error occurred');
+        }
+
+        if ($_FILES['file']['size'] > 1000000) {
+            throw new Exception('File is too large');
+        }
+
+        $mime_types = ['image/gif', 'image/png', 'image/jpeg'];
+        if (!in_array($_FILES['file']['type'], $mime_types)) {
+            throw new Exception('Invalid file type');
+        }
+
+
+    }
+    catch (Exception $e) {
+        echo $e->getMessage();
+    }
 }
+
 
 ?>
 <?php require '../includes/header.php'; ?>
 
 <h2>Edit article image</h2>
+
+<form method="post" enctype="multipart/form-data">
+
+    <div>
+        <label for="file">Image File</label>
+        <input type="file" name="file" id="file">
+    </div>
+
+    <button>Upload</button>
+
+</form>
 
 <?php require '../includes/footer.php'; ?>

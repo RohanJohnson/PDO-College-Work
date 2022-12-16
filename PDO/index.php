@@ -13,13 +13,14 @@ $articles = Article::getPage($conn, $paginator->limit, $paginator->offset);
 <?php require 'includes/header.php'; ?>
 
 
-<?php if (empty($articles)) : ?>
+<?php if (empty($articles)): ?>
 <p>No articles found.</p>
 <a href="?page=<?= $paginator->previous; ?>"> Previous</a>
-<?php else : ?>
+<?php
+else: ?>
 
 <ul>
-    <?php foreach ($articles as $article) : ?>
+    <?php foreach ($articles as $article): ?>
     <li>
         <article>
             <div class="titl">
@@ -28,7 +29,8 @@ $articles = Article::getPage($conn, $paginator->limit, $paginator->offset);
             <p><?= htmlspecialchars($article['content']); ?></p>
         </article>
     </li>
-    <?php endforeach; ?>
+    <?php
+    endforeach; ?>
 </ul>
 
 <nav>
@@ -39,13 +41,16 @@ $articles = Article::getPage($conn, $paginator->limit, $paginator->offset);
         <li>
         <?php if ($paginator->previous): ?>
             <a href="?page=<?= $paginator->previous; ?>"> Previous</a>
-            <?php else: ?>
+            <?php
+    else: ?>
                 Previous
-            <?php endif; ?>
+            <?php
+    endif; ?>
         </li>
     </ul>
 </nav>
 
-<?php endif; ?>
+<?php
+endif; ?>
 
 <?php require 'includes/footer.php'; ?>

@@ -2,10 +2,7 @@
 
 class User
 {
-
-public $id;
-public $username;
-public $password;
+    public $id;    public $username;    public $password;
 
     public static function authenticate($conn, $username, $password)
     {
@@ -17,9 +14,8 @@ public $password;
         $stmt->setFetchMode(PDO::FETCH_CLASS, 'User');
 
         $stmt->execute();
- 
-        if($user = $stmt->fetch())
-        {
+
+        if ($user = $stmt->fetch()) {
             return password_verify($password, $user->password);
         }
     }

@@ -10,11 +10,12 @@ if (isset($_GET['id'])) {
 
     $article = Article::getByID($conn, $_GET['id']);
 
-    if ( ! $article) {
+    if (!$article) {
         die("article not found");
     }
 
-} else {
+}
+else {
     die("id not supplied, article not found");
 }
 
